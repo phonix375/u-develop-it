@@ -18,11 +18,22 @@ const db = mysql.createConnection(
     },
     console.log('connect to the database')
 
-)
-// show all candidates
-// db.query(`SELECT * FROM candidates`, (err, rows) => {
-//     console.log(rows);
-//   });
+);
+app.get('/api/candidates' ,(req,res) => {
+    console.log('Im here');
+    const sql = `SELECT * FROM candidates`;
+    db.query(sql, (err, rows) => {
+        if(err){
+            res.status(500).json({error:err.message});
+        }
+        res.json(
+            {
+                message:'success',
+                data: rows
+            });
+        });
+});
+
 
 //select one candidate by ID
 // db.query(`SELECT * FROM candidates WHERE id = 20`, (err, row) =>{
@@ -57,6 +68,7 @@ const db = mysql.createConnection(
 // });
 //default response to all unfound pages
 app.use((req, res) => {
+    console.log('not here');
     res.status(404).end();
 })
 
